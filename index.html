@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How are you feeling?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            width: 80%;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #CC0000;
+        }
+        #response {
+            margin-top: 1rem;
+            text-align: left;
+        }
+        #loading {
+            display: none;
+        }
+        #queenImage {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1rem;
+            display: none;
+        }
+        .magic-wand {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M7 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4zm10 3v14a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1V7h10zm-5 2a1 1 0 0 0-1 1v8a1 1 0 0 0 2 0v-8a1 1 0 0 0-1-1z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        @keyframes wave {
+            0% { transform: rotate(0deg) translateY(0px); }
+            25% { transform: rotate(-20deg) translateY(-10px); }
+            50% { transform: rotate(0deg) translateY(0px); }
+            75% { transform: rotate(20deg) translateY(-10px); }
+            100% { transform: rotate(0deg) translateY(0px); }
+        }
+        .waving {
+            opacity: 1;
+            animation: wave 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>How are you feeling today?</h1>
+        <input type="text" id="feeling" placeholder="Enter your feeling...">
+        <button onclick="checkFeeling()">Submit</button>
+        <div id="loading">Generating response...</div>
+        <p id="response"></p>
+        <img id="queenImage" src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Queen_Elizabeth_II_in_March_2015.jpg" alt="Queen Elizabeth II">
+    </div>
+
+    <div class="magic-wand"></div>
+
+    <script>
+        function checkFeeling() {
+            const feeling = document.getElementById('feeling').value.toLowerCase();
+            const responseElement = document.getElementById('response');
+            const loadingElement = document.getElementById('loading');
+            const queenImage = document.getElementById('queenImage');
+
+            if (!feeling) {
+                responseElement.textContent = "Please enter how you're feeling.";
+                return;
+            }
+
+            responseElement.textContent = '';
+            loadingElement.style.display = 'block';
+            queenImage.style.display = 'none';
+
+            setTimeout(() => {
+                let response = '';
+                if (feeling === 'god save the queen') {
+                    response = "Long live the Queen! Here's a picture of Queen Elizabeth II.";
+                    queenImage.style.display = 'block';
+                } else if (feeling.includes('happy') || feeling.includes('good') || feeling.includes('great')) {
+                    response = "That's wonderful! I'm glad you're feeling positive. Keep spreading that joy!";
+                } else if (feeling.includes('sad') || feeling.includes('down') || feeling.includes('bad')) {
+                    response = "I'm sorry you're feeling down. Remember, it's okay to have these feelings. Consider talking to someone you trust or doing something you enjoy.";
+                } else if (feeling.includes('angry') || feeling.includes('frustrated')) {
+                    response = "It's understandable to feel frustrated sometimes. Try taking a few deep breaths and remember that this feeling will pass.";
+                } else if (feeling.includes('tired') || feeling.includes('exhausted')) {
+                    response = "Being tired can be tough. Make sure to give yourself time to rest and recharge. Your well-being is important!";
+                } else {
+                    response = `I hear that you're feeling ${feeling}. Remember that all feelings are valid, and it's okay to experience them. Take care of yourself!`;
+                }
+
+                responseElement.textContent = response;
+                loadingElement.style.display = 'none';
+            }, 1000);
+        }
+
+        function animateWand() {
+            const wand = document.querySelector('.magic-wand');
+            wand.style.left = event.clientX + 'px';
+            wand.style.top = event.clientY + 'px';
+            wand.classList.add('waving');
+            setTimeout(() => {
+                wand.classList.remove('waving');
+            }, 1000);
+        }
+
+        document.querySelector('button').addEventListener('click', (event) => {
+            checkFeeling();
+            animateWand();
+        });
+    </script>
+</body>
+</html>
